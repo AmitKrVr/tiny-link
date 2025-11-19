@@ -143,7 +143,7 @@ export function LinksTable({ initialLinks = [] }: LinksTableProps) {
                                     className="rounded-3xl border border-white/40 bg-white/70 p-6 shadow-sm transition hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-lg dark:border-white/10 dark:bg-white/5"
                                 >
                                     <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
-                                        <div className="min-w-0 space-y-2">
+                                        <div className="space-y-2">
                                             <div className="flex flex-wrap items-center gap-3">
                                                 <span className="inline-flex items-center rounded-full bg-slate-900 px-4 py-1 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">
                                                     /{link.code}
@@ -169,7 +169,7 @@ export function LinksTable({ initialLinks = [] }: LinksTableProps) {
                                                     )}
                                                 </button>
                                             </div>
-                                            <p className="truncate text-sm text-muted-foreground">
+                                            <p className="truncate text-sm text-muted-foreground max-w-64 sm:max-w-72 md:max-w-96">
                                                 {link.targetUrl}
                                             </p>
                                         </div>
