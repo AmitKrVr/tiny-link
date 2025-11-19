@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
 import { deleteLinkByCode, getLinkByCode } from "@/lib/data/links";
 import { codeParamSchema } from "@/lib/validation/link";
@@ -9,11 +9,11 @@ import {
 import { LinkError } from "@/lib/errors";
 
 type RouteContext = {
-    params: { code: string };
+    params: Promise<{ code: string }>;
 };
 
-export async function GET(_: Request, context: RouteContext) {
-    const { code } = context.params;
+export async function GET(_: NextRequest, context: RouteContext) {
+    const { code } = await context.params;
     const validated = codeParamSchema.parse(code);
     const link = await getLinkByCode(validated);
 
@@ -24,9 +24,9 @@ export async function GET(_: Request, context: RouteContext) {
     return NextResponse.json(toSerializableLink(link));
 }
 
-export async function DELETE(_: Request, context: RouteContext) {
+export async function DELETE(_: NextRequest, context: RouteContext) {
     try {
-        const { code } = context.params;
+        const { code } = await context.params;
         const validated = codeParamSchema.parse(code);
         const link = await deleteLinkByCode(validated);
 
@@ -47,4 +47,3 @@ export async function DELETE(_: Request, context: RouteContext) {
         );
     }
 }
-
