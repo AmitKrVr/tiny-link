@@ -1,36 +1,62 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## TinyLink
 
-## Getting Started
+Modern URL shortener built with Next.js 16, Tailwind CSS, Neon PostgreSQL, and Drizzle ORM. Create branded short codes, manage every link from a rich dashboard, and inspect per-link analytics.
 
-First, run the development server:
+### Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+-   REST API (`/api/links`, `/api/links/:code`) using Next.js Route Handlers
+-   Server-side redirect route (`/[code]`) that increments click stats
+-   Dashboard with form validation (React Hook Form + Zod), live search, copy + delete actions, and loading/error states powered by Zustand + axios
+-   Stats page (`/code/:code`) detailing clicks, timestamps, and target URL
+-   Health check at `/healthz`
+
+### Project Structure
+
+```
+app/
+  page.tsx            # Dashboard
+  [code]/page.tsx     # Redirect
+  code/[code]/page.tsx# Stats view
+  api/links/*.ts      # REST endpoints
+db/
+  schema.ts           # Drizzle schema
+lib/
+  data/links.ts       # Server actions + helpers
+  stores/useLinksStore.ts
+  validation/link.ts
+components/
+  AddLinkForm.tsx
+  LinksTable.tsx
+  DeleteButton.tsx
+  CopyButton.tsx
+  Header.tsx
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Copy `.env.example` and provide credentials:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```
+DATABASE_URL=postgres://...
+NEXT_PUBLIC_BASE_URL=https://your-vercel-domain.com
+```
 
-## Learn More
+### Development
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm install
+npm run dev
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Database
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Run migrations with [Drizzle Kit](https://orm.drizzle.team/docs/overview):
 
-## Deploy on Vercel
+```bash
+npx drizzle-kit generate
+npx drizzle-kit push
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Deployment
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Deploy to Vercel with Neon for Postgres. Make sure `DATABASE_URL` and `BASE_URL` (your Vercel domain) are configured in the dashboard and re-run `npx drizzle-kit push` if schema changes. All routes are server-rendered and ready for edge/serverless environments.
