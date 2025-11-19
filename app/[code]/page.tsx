@@ -1,4 +1,5 @@
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
+import { NextResponse } from "next/server";
 
 import { incrementLinkMetrics } from "@/lib/data/links";
 import { codeParamSchema } from "@/lib/validation/link";
@@ -14,7 +15,7 @@ export default async function RedirectPage({ params }: PageProps) {
 
     try {
         const link = await incrementLinkMetrics(validated);
-        redirect(link.targetUrl);
+        return NextResponse.redirect(link.targetUrl, { status: 302 });
     } catch (error) {
         if (error instanceof LinkError && error.status === 404) {
             notFound();

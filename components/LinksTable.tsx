@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import { Input } from "@/components/ui/input";
+import { DeleteButton } from "@/components/DeleteButton";
 import { useLinksStore } from "@/lib/stores/useLinksStore";
 import type { SerializableLink } from "@/lib/types/link";
 
@@ -204,7 +205,7 @@ export function LinksTable({ initialLinks = [] }: LinksTableProps) {
                                     <div className="mt-5 flex flex-wrap items-center gap-3">
                                         <a
                                             href={`/code/${link.code}`}
-                                            className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/70 px-4 py-2 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 dark:border-white/10 dark:bg-white/10 dark:text-white"
+                                            className="inline-flex items-center gap-2 rounded-full border border-white/40 bg-white/70 sm:px-4 py-2 text-sm font-semibold text-slate-900 transition hover:-translate-y-0.5 dark:border-white/10 dark:bg-white/10 dark:text-white"
                                         >
                                             <BarChart3 className="h-4 w-4" />
                                             View stats
@@ -218,6 +219,7 @@ export function LinksTable({ initialLinks = [] }: LinksTableProps) {
                                             <MousePointerClick className="h-4 w-4" />
                                             Open link
                                         </a>
+                                        <DeleteButton code={link.code} />
                                     </div>
                                 </article>
                             );

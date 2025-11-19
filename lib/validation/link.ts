@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-const codeRegex = /^[A-Za-z0-9_-]+$/;
+const codeRegex = /^[A-Za-z0-9]{6,8}$/;
 
 export const createLinkSchema = z.object({
     url: z
@@ -12,18 +12,14 @@ export const createLinkSchema = z.object({
         .trim()
         .optional()
         .refine((value) => !value || codeRegex.test(value), {
-            message: "Use only letters, numbers, underscores, or dashes",
-        })
-        .refine((value) => !value || (value.length >= 3 && value.length <= 32), {
-            message: "Custom codes must be 3–32 characters",
+            message: "Custom codes must be 6–8 characters using only letters and numbers",
         }),
 });
 
 export const codeParamSchema = z
     .string()
     .trim()
-    .min(3, "Code is required")
-    .max(64, "Code is too long");
+    .regex(codeRegex, "Code must be 6–8 characters using only letters and numbers");
 
 export type CreateLinkInput = z.infer<typeof createLinkSchema>;
 
